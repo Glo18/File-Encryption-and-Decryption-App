@@ -1,38 +1,336 @@
+/* General App Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdf6ff;
+  color: #333;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* Main App Container */
 .App {
+  text-align: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  max-width: 950px;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #7b2cbf;
+  margin-bottom: 10px;
+}
+
+/* Layout Containers */
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+textarea, input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+  resize: none;
+}
+
+/* Buttons */
+button {
+  background-color: #9d4edd;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #7b2cbf;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* ====== Encryption Settings ====== */
+.encryption-container {
+  margin: 20px 0;
+}
+
+.encryption-container select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+/* ====== Navbar ====== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #7b2cbf;
+  padding: 15px 20px;
+  color: white;
+  align-items: center;
+  border-bottom: 4px solid #5a189a;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  margin: 0 12px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+  color: #fdf6ff;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: #e6a0e9;
+  padding: 8px 15px;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #31122a;
+}
+
+/* ====== File Upload ====== */
+.file-upload-container {
+  border: 2px dashed #9d4edd;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-upload-container:hover {
+  background-color: #f3e8ff;
+}
+
+/* ====== Notifications ====== */
+.notification {
+  background-color: #ff9800;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ====== Authentication Forms ====== */
+.auth-container {
+  max-width: 400px;
+  background: white;
+  padding: 20px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.auth-container h2 {
+  margin-bottom: 15px;
+  color: #7b2cbf;
+}
+
+/* Login & Register Form Styling */
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .navbar ul li {
+    margin: 5px 0;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* ====== Home Page Styling ====== */
+.home-section {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fef2ff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.home-section h1 {
+  color: #7b2cbf;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.home-section p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.feature-cards {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.feature-card {
+  flex: 1 1 250px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #9d4edd;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background-color: #f3e8ff;
+}
+
+.feature-card h3 {
+  color: #7b2cbf;
+}
+
+.feature-card p {
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.contact-section {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.contact-section h2 {
+  color: #7b2cbf;
+  margin-bottom: 20px;
+}
+
+.contact-section ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.contact-section ul li {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.contact-section strong {
+  color: #5a189a;
+}
+
+.settings-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fef6ff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+/* ====== Footer ====== */
+.app-footer {
+  width: 100%;
+  background-color: #7b2cbf;
   color: white;
+  padding: 30px 20px;
+  text-align: center;
+  margin-top: 40px;
+  border-top: 5px solid #5a189a;
+  font-size: 14px;
+  position: relative;
+  left: 0;
+  bottom: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.app-footer h3 {
+  color: #7b2cbf;
+  margin-bottom: 15px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-footer p {
+  color: #f5f8fc;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.app-footer a {
+  color: #9d4edd;
+  text-decoration: underline;
+}
+
+.app-footer a:hover {
+  color: #ffffff;
 }
