@@ -26,7 +26,7 @@ const Register = () => {
         }
 
         // Add new user
-        const newUser = { name, email, password };
+        const newUser = { name, email, password, role: "admin" };
         existingUsers.push(newUser);
 
         // Save to localStorage

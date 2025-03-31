@@ -18,10 +18,38 @@ const DecryptForm = () => {
         setFile(e.target.files[0]);
     };
 
+    // Update activityStats and fileActivities in localStorage
+  const updateLocalStorageActivity = (type, fileName = "Text Data") => {
+    const stats = JSON.parse(localStorage.getItem("activityStats")) || {
+      encrypted: 0,
+      decrypted: 0,
+      downloads: 0,
+      success: 0,
+      failed: 0,
+      lastActivity: "N/A",
+    };
+
+    const activities = JSON.parse(localStorage.getItem("fileActivities")) || [];
+
+    const timestamp = new Date().toLocaleString();
+    const newActivity = { fileName, type, timestamp };
+
+    if (type === "Decrypted") stats.decrypted++;
+    if (type === "Downloaded") stats.downloads++;
+    if (["Decrypted", "Downloaded"].includes(type)) stats.success++;
+    if (type === "Failed Decryption") stats.failed++;
+
+    stats.lastActivity = timestamp;
+
+    localStorage.setItem("activityStats", JSON.stringify(stats));
+    localStorage.setItem("fileActivities", JSON.stringify([newActivity, ...activities]));
+  };
+
     // Function to handle decryption process
     const handleTextDecrypt = () => {
         if (!ciphertext || !key) {
             alert("Please enter both encrypted text and decryption key!");
+            updateLocalStorageActivity("Failed Decryption");
             return;
         }
 
@@ -49,25 +77,30 @@ const DecryptForm = () => {
             const decrypted = bytes.toString(CryptoJS.enc.Utf8);
             if (!decrypted) {
                 alert("Invalid key or corrupted data!");
+                updateLocalStorageActivity("Failed Decryption");
                 return;
             }
 
             // Update state with the decrypted text
             setDecryptedText(decrypted);
+            updateLocalStorageActivity("Decrypted");
         } catch (error) {
             alert("Failed to decrypt. Please check your key.");
+            updateLocalStorageActivity("Failed Decryption");
         }
     };
 
-    // Decrypts an encrypted file
+    // Decrypts an uploaded file
     const handleFileDecrypt = async () => {
         if (!file || !key) {
             alert("Please select an encrypted file and enter a decryption key!");
+            updateLocalStorageActivity("Failed Decryption", file?.name || "Unknown File");
             return;
         }
 
         const reader = new FileReader();
         reader.readAsText(file);
+
         reader.onload = () => {
             const encryptedFileData = reader.result;
 
@@ -91,12 +124,15 @@ const DecryptForm = () => {
                 const decrypted = bytes.toString(CryptoJS.enc.Utf8);
                 if (!decrypted) {
                     alert("Invalid key or corrupted file!");
+                    updateLocalStorageActivity("Failed Decryption", file.name);
                     return;
                 }
 
                 setDecryptedFile(decrypted);
+                updateLocalStorageActivity("Decrypted", file.name);
             } catch (error) {
                 alert("Failed to decrypt. Check your key and file format.");
+                updateLocalStorageActivity("Failed Decryption", file.name);
             }
         };
     };
@@ -107,8 +143,10 @@ const DecryptForm = () => {
         const blob = new Blob([decryptedFile], { type: "text/plain" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = file.name.replace(".enc", ""); // Restore original filename
+        link.download = file.name.replace(".enc", "") || "decrypted.txt"; // Restore original filename
         link.click();
+
+        updateLocalStorageActivity("Downloaded", file.name);
     };
 
     return (
@@ -132,7 +170,7 @@ const DecryptForm = () => {
             {/* Text Decryption Mode */}
             {mode === "text" && (
                 <>
-                <textarea rows="4" placeholder="Paste encrypted text" value={ciphertext} onChange={(e) => setCiphertext(e.target.value)} />
+                <textarea rows="4" placeholder="Paste decrypted text" value={ciphertext} onChange={(e) => setCiphertext(e.target.value)} />
                 <input type="password" placeholder="Decryption Key" value={key} onChange={(e) => setKey(e.target.value)} />
                 <button onClick={handleTextDecrypt}>Decrypt Text</button>
                 {decryptedText && <textarea rows="3" readOnly value={decryptedText} />}

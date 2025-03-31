@@ -18,16 +18,44 @@ const EncryptForm = () => {
         setFile(e.target.files[0]);
     };
 
+    const updateLocalStorageActivity = (type, fileName = null) => {
+        const stats = JSON.parse(localStorage.getItem("activityStats")) || {
+          encrypted: 0,
+          decrypted: 0,
+          downloads: 0,
+          success: 0,
+          failed: 0,
+          lastActivity: "N/A",
+        };
+
+        const fileActivities = JSON.parse(localStorage.getItem("fileActivities")) || [];
+
+        const timestamp = new Date().toLocaleString();
+        const newActivity = { fileName, type, timestamp };
+      
+          // Update stats
+          if (type === "Encrypted") stats.encrypted++;
+          if (type === "Downloaded") stats.downloads++;
+          if (["Encrypted", "Downloaded"].includes(type)) stats.success++;
+          if (type === "Failed Encryption") stats.failed++;
+      
+          stats.lastActivity = newActivity.timestamp;
+
+          localStorage.setItem("activityStats", JSON.stringify(stats));
+          localStorage.setItem("fileActivities", JSON.stringify([newActivity, ...fileActivities]));
+  };
+
     // Function to handle encryption process
     const handleTextEncrypt = () => {
         // Ensure that both text and key are provided before proceeding
         if (!text || !key) {
             alert("Please enter both text and encryption key!");
+            updateLocalStorageActivity("Failed Encryption");
             return;
         }
         // Encrypt the input text using AES encryption with the provided key
         //const encrypted = CryptoJS.AES.encrypt(text, key).toString();
-        
+        try {
         let encrypted;
         switch (algorithm) {
             case "AES":
@@ -49,12 +77,18 @@ const EncryptForm = () => {
 
         // Update state with the encrypted text
         setEncryptedText(encrypted);
+        updateLocalStorageActivity("Encrypted");
+        } catch (error) {
+            alert("Encryption failed.");
+      updateLocalStorageActivity("Failed Encryption");
+    }
     };
 
     // Encrypts the selected file
     const handleFileEncrypt = async () => {
         if (!file || !key) {
             alert("Please select a file and enter an encryption key!");
+            updateLocalStorageActivity("Failed Encryption", file?.name || "Unknown File");
             return;
         }
 
@@ -64,6 +98,7 @@ const EncryptForm = () => {
             const fileData = reader.result;
             //const encrypted = CryptoJS.AES.encrypt(fileData, key).toString();
            
+            try {
             let encrypted;
             switch (algorithm) {
                 case "AES":
@@ -81,6 +116,11 @@ const EncryptForm = () => {
             }
 
             setEncryptedFile(encrypted);
+            updateLocalStorageActivity("Encrypted", file.name);
+        } catch {
+            alert("Encryption failed.");
+            updateLocalStorageActivity("Failed Encryption", file.name);
+        }
         };
     };
 
@@ -90,8 +130,9 @@ const EncryptForm = () => {
         const blob = new Blob([encryptedFile], { type: "text/plain" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${file.name}.enc`;
+        link.download = `${file.name}.enc`;        
         link.click();
+        updateLocalStorageActivity("Downloaded", `${file.name}.enc`);
     };
 
     return (

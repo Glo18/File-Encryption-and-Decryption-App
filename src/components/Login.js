@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({setAuth}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -19,14 +19,14 @@ const Login = () => {
 
         if (matchingUser) {
             alert(`Welcome back, ${matchingUser.name}!`);
-            localStorage.setItem("currentUser", JSON.stringify(matchingUser)); // Store session
-            navigate("/"); // Redirect to home page
+            localStorage.setItem("currentUser", JSON.stringify({...matchingUser, role: matchingUser.role })); // Store session
+            setAuth(true);
+            navigate("/"); // Redirect to dashboard page
         } else {
             alert("Invalid email or password!");
         }
     };
         
-
     return (
         <div className="auth-container">
             <h2>Login</h2>

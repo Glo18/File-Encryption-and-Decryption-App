@@ -12,11 +12,13 @@ import Settings from "./components/Settings";
 import Home from "./components/Home";
 import About from "./components/About";
 import Footer from "./components/Footer";
+import AdminDashboard from "./components/AdminDashboard";
 import './App.css';
 
 function App() {
   // State to track authentication status
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   // Check local storage for authentication status on mount
   useEffect(() => {
@@ -40,45 +42,21 @@ const handleLogout = () => {
                 {/* ========= PUBLIC ROUTES ========= */}
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/about" element={<About />} />
-
-                <Route
-                    path="/"
-                    element={!isAuthenticated ? <Register setAuth={setIsAuthenticated} /> : <Home />}
-                    />
+                <Route path="/" element={!isAuthenticated ? <Register setAuth={setIsAuthenticated} /> : <Home />} />
 
                 {/* Redirect authenticated users away from login/register */}
-                <Route 
-                    path="/login" 
-                    element={!isAuthenticated ? <Login setAuth={setIsAuthenticated} /> : <Navigate to="/" />} 
-                />
-                <Route 
-                    path="/register" 
-                    element={!isAuthenticated ? <Register setAuth={setIsAuthenticated} /> : <Navigate to="/" />} 
-                />
+                <Route path="/login" element={!isAuthenticated ? <Login setAuth={setIsAuthenticated} /> : <Navigate to="/" />} />
+                <Route path="/register" element={!isAuthenticated ? <Register setAuth={setIsAuthenticated} /> : <Navigate to="/" />} />
 
                 {/* ========= PROTECTED ROUTES ========= */}
 
                 {/* Encryption Routes – protected */}
-                <Route 
-                    path="/encrypt" 
-                    element={isAuthenticated ? <EncryptForm /> : <Navigate to="/login" />} 
-                />
-                <Route 
-                    path="/decrypt" 
-                    element={isAuthenticated ? <DecryptForm /> : <Navigate to="/login" />} 
-                />
-                <Route
-                    path="/upload"
-                    element={isAuthenticated ? <FileUpload /> : <Navigate to="/login" />}
-                />
-                <Route
-                    path="/settings"
-                    element={isAuthenticated ? <Settings /> : <Navigate to="/login" />}
-                />
-                <Route
-                    path="/encryption-settings"
-                    element={isAuthenticated ? <EncryptionSettings /> : <Navigate to="/login" />}
-                />
+                <Route path="/encrypt" element={isAuthenticated ? <EncryptForm /> : <Navigate to="/login" />} />
+                <Route path="/decrypt" element={isAuthenticated ? <DecryptForm /> : <Navigate to="/login" />} />
+                <Route path="/upload"  element={isAuthenticated ? <FileUpload /> : <Navigate to="/login" />}  />
+                <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
+                <Route path="/encryption-settings" element={isAuthenticated ? <EncryptionSettings /> : <Navigate to="/login" />} />
+                <Route path="/admin-dashboard" element={isAuthenticated && currentUser?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
 
             </Routes>
             <Footer />
