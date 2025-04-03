@@ -20,6 +20,7 @@ const Login = ({setAuth}) => {
         if (matchingUser) {
             alert(`Welcome back, ${matchingUser.name}!`);
             localStorage.setItem("currentUser", JSON.stringify({...matchingUser, role: matchingUser.role })); // Store session
+            localStorage.setItem("username", matchingUser.name); //Store user's name
             setAuth(true);
             navigate("/"); // Redirect to dashboard page
         } else {

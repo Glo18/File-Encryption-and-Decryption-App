@@ -184,6 +184,16 @@ button:active {
   margin-top: 10px;
 }
 
+.input-style {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {

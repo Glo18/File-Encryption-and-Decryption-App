@@ -13,13 +13,16 @@ const DecryptForm = () => {
     const [mode, setMode] = useState("text"); // "text" or "file"
     const [algorithm, setAlgorithm] = useState("AES"); // Default decryption algorithm
 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")); 
+    const username = currentUser?.name || "Anonymous";
+
     // Handles file selection
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
     // Update activityStats and fileActivities in localStorage
-  const updateLocalStorageActivity = (type, fileName = "Text Data") => {
+    const updateLocalStorageActivity = (type, fileName = "Text Data") => {
     const stats = JSON.parse(localStorage.getItem("activityStats")) || {
       encrypted: 0,
       decrypted: 0,
@@ -32,7 +35,7 @@ const DecryptForm = () => {
     const activities = JSON.parse(localStorage.getItem("fileActivities")) || [];
 
     const timestamp = new Date().toLocaleString();
-    const newActivity = { fileName, type, timestamp };
+    const newActivity = { username, fileName, type, timestamp };
 
     if (type === "Decrypted") stats.decrypted++;
     if (type === "Downloaded") stats.downloads++;

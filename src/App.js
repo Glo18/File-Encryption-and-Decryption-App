@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./components/UserDashboard";
 import './App.css';
 
 function App() {
@@ -57,6 +58,8 @@ const handleLogout = () => {
                 <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
                 <Route path="/encryption-settings" element={isAuthenticated ? <EncryptionSettings /> : <Navigate to="/login" />} />
                 <Route path="/admin-dashboard" element={isAuthenticated && currentUser?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
+                <Route path="/user-dashboard" element={isAuthenticated ? <UserDashboard /> : <Navigate to="/login" />} />
+
 
             </Routes>
             <Footer />

@@ -13,6 +13,9 @@ const EncryptForm = () => {
     const [mode, setMode] = useState("text"); // Mode can be "text" or "file"
     const [algorithm, setAlgorithm] = useState("AES"); // Default: AES
 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const username = currentUser?.name || "Anonymous";
+
     // Handles file selection
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -31,7 +34,7 @@ const EncryptForm = () => {
         const fileActivities = JSON.parse(localStorage.getItem("fileActivities")) || [];
 
         const timestamp = new Date().toLocaleString();
-        const newActivity = { fileName, type, timestamp };
+        const newActivity = { user: username, fileName, type, timestamp };
       
           // Update stats
           if (type === "Encrypted") stats.encrypted++;
@@ -80,7 +83,7 @@ const EncryptForm = () => {
         updateLocalStorageActivity("Encrypted");
         } catch (error) {
             alert("Encryption failed.");
-      updateLocalStorageActivity("Failed Encryption");
+            updateLocalStorageActivity("Failed Encryption");
     }
     };
 

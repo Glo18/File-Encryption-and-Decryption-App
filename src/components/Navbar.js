@@ -16,6 +16,9 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
                 {isAuthenticated && currentUser?.role === "admin" && (
                     <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
                 )}
+                {isAuthenticated && currentUser?.role === "user" && (
+                    <li><Link to="/user-dashboard">User Dashboard</Link></li>
+                    )}
 
                 {/* Show logout if user IS authenticated */}
                 {isAuthenticated && (
