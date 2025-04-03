@@ -35,7 +35,7 @@ const DecryptForm = () => {
     const activities = JSON.parse(localStorage.getItem("fileActivities")) || [];
 
     const timestamp = new Date().toLocaleString();
-    const newActivity = { username, fileName, type, timestamp };
+    const newActivity = { user: username, fileName, type, timestamp };
 
     if (type === "Decrypted") stats.decrypted++;
     if (type === "Downloaded") stats.downloads++;
